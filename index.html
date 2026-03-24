@@ -259,11 +259,18 @@
   }
   .track:hover { background: rgba(255,255,255,0.015); }
   .track-num { font-size: 13px; color: var(--fg-dim); text-align: right; font-variant-numeric: tabular-nums; }
+  .track-num .play-icon { display: none; }
+  .track:hover .track-num .num-text { display: none; }
+  .track:hover .track-num .play-icon { display: inline; }
+  .track.playing .track-num .num-text { display: none; }
+  .track.playing .track-num .play-icon { display: inline; color: var(--fg); }
   .track-info { display: flex; flex-direction: column; gap: 2px; }
   .track-title { font-size: 13px; font-weight: 500; letter-spacing: 0.04em; }
+  .track.playing .track-title { color: var(--hover); }
   .track-artist { font-size: 11px; color: var(--fg-dim); letter-spacing: 0.02em; }
   .track-dur { font-size: 11px; color: var(--fg-dim); font-variant-numeric: tabular-nums; }
   .track:hover .track-num { color: var(--fg); }
+  .sc-player { position: fixed; left: -9999px; width: 1px; height: 1px; }
 
   /* ── FOOTER LOGO ── */
   .footer-logo-wrap {
@@ -429,12 +436,13 @@
 <section id="music">
   <div class="section-label reveal">Music</div>
   <div class="tracks reveal">
-    <div class="track"><span class="track-num">01</span><div class="track-info"><span class="track-title">&mdash;</span><span class="track-artist">BBE</span></div><span class="track-dur">&mdash;:&mdash;&mdash;</span></div>
-    <div class="track"><span class="track-num">02</span><div class="track-info"><span class="track-title">&mdash;</span><span class="track-artist">BBE</span></div><span class="track-dur">&mdash;:&mdash;&mdash;</span></div>
-    <div class="track"><span class="track-num">03</span><div class="track-info"><span class="track-title">&mdash;</span><span class="track-artist">BBE</span></div><span class="track-dur">&mdash;:&mdash;&mdash;</span></div>
-    <div class="track"><span class="track-num">04</span><div class="track-info"><span class="track-title">&mdash;</span><span class="track-artist">BBE</span></div><span class="track-dur">&mdash;:&mdash;&mdash;</span></div>
-    <div class="track"><span class="track-num">05</span><div class="track-info"><span class="track-title">&mdash;</span><span class="track-artist">BBE</span></div><span class="track-dur">&mdash;:&mdash;&mdash;</span></div>
+    <div class="track" data-sc="https://soundcloud.com/blacwill/yesterday-prod-by-iloveedm"><span class="track-num"><span class="num-text">01</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">YESTERDAY</span><span class="track-artist">Blac Will &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
+    <div class="track" data-sc="https://soundcloud.com/blacwill/summerslam-06-feat-zito-prod"><span class="track-num"><span class="num-text">02</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">SummerSlam '06</span><span class="track-artist">Blac Will ft. Zito &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
+    <div class="track" data-sc="https://soundcloud.com/blacwill/eat-up-feat-young-bobout-prod-by-owie-d"><span class="track-num"><span class="num-text">03</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">Eat Up</span><span class="track-artist">Blac Will ft. Young Bobout &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
+    <div class="track" data-sc="https://soundcloud.com/blacwill/do-we-have-to-prod-by-iloveedm"><span class="track-num"><span class="num-text">04</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">Add The Blac</span><span class="track-artist">Blac Will &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
+    <div class="track" data-sc="https://soundcloud.com/blacwill/hey-yana-feat-michael"><span class="track-num"><span class="num-text">05</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">HEY YANA</span><span class="track-artist">Blac Will ft. Michael Christmas &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
   </div>
+  <iframe id="scPlayer" class="sc-player" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/blacwill/yesterday-prod-by-iloveedm&color=%23d9d0c4&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>
 </section>
 
 <div class="footer-logo-wrap">
@@ -810,6 +818,87 @@ window.addEventListener('scroll', function() {
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
+
+// SoundCloud Player
+(function() {
+  var scScript = document.createElement('script');
+  scScript.src = 'https://w.soundcloud.com/player/api.js';
+  scScript.onload = function() {
+    var iframe = document.getElementById('scPlayer');
+    var widget = SC.Widget(iframe);
+    var tracks = document.querySelectorAll('.track[data-sc]');
+    var currentTrack = null;
+    var isPlaying = false;
+
+    widget.bind(SC.Widget.Events.FINISH, function() {
+      if (currentTrack) currentTrack.classList.remove('playing');
+      isPlaying = false;
+      currentTrack = null;
+    });
+
+    widget.bind(SC.Widget.Events.PLAY, function() {
+      isPlaying = true;
+    });
+
+    widget.bind(SC.Widget.Events.PAUSE, function() {
+      isPlaying = false;
+    });
+
+    tracks.forEach(function(track) {
+      track.addEventListener('click', function() {
+        var url = track.getAttribute('data-sc');
+
+        if (currentTrack === track) {
+          // Toggle play/pause on same track
+          if (isPlaying) {
+            widget.pause();
+            track.classList.remove('playing');
+          } else {
+            widget.play();
+            track.classList.add('playing');
+          }
+          return;
+        }
+
+        // New track
+        if (currentTrack) currentTrack.classList.remove('playing');
+        currentTrack = track;
+        track.classList.add('playing');
+
+        // Update play icon to pause
+        var playIcon = track.querySelector('.play-icon');
+        playIcon.innerHTML = '&#9646;&#9646;';
+
+        widget.load(url, {
+          auto_play: true,
+          hide_related: true,
+          show_comments: false,
+          show_user: false,
+          show_reposts: false,
+          show_teaser: false,
+          callback: function() {
+            widget.bind(SC.Widget.Events.FINISH, function() {
+              if (currentTrack) currentTrack.classList.remove('playing');
+              isPlaying = false;
+              currentTrack = null;
+              // Reset all icons
+              tracks.forEach(function(t) {
+                t.querySelector('.play-icon').innerHTML = '&#9654;';
+              });
+            });
+          }
+        });
+
+        // Reset other icons, set this one to pause
+        tracks.forEach(function(t) {
+          t.querySelector('.play-icon').innerHTML = '&#9654;';
+        });
+        playIcon.innerHTML = '&#9646;&#9646;';
+      });
+    });
+  };
+  document.body.appendChild(scScript);
+})();
 </script>
 </body>
 </html>
