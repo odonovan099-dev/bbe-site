@@ -265,6 +265,30 @@
   .track-dur { font-size: 11px; color: var(--fg-dim); font-variant-numeric: tabular-nums; }
   .track:hover .track-num { color: var(--fg); }
 
+  /* ── FOOTER LOGO ── */
+  .footer-logo-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+    height: 50vh;
+    pointer-events: none;
+  }
+  .footer-logo-wrap canvas {
+    width: min(80vw, 700px);
+    height: auto;
+    aspect-ratio: 2.8 / 1;
+    opacity: 0.10;
+  }
+  .footer-logo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--bg) 0%, transparent 25%, transparent 50%, var(--bg) 100%);
+    pointer-events: none;
+  }
+
   /* ── INFO ── */
   #info { display: flex; flex-direction: column; justify-content: flex-end; min-height: 100vh; }
   .info-grid {
@@ -363,53 +387,38 @@
   <div class="section-label reveal">Artists</div>
   <div class="grid reveal">
 
-    <div class="grid-item">
+    <a class="grid-item" href="https://soundcloud.com/blacwill" target="_blank">
       <svg class="placeholder-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="12" r="5"/><path d="M6,28 C6,22 10,18 16,18 C22,18 26,22 26,28"/></svg>
-      <!-- <img src="artist1.jpg" alt="Artist Name"> -->
       <div class="artist-overlay">
-        <span class="artist-name">artist one</span>
+        <span class="artist-name">Blac Will</span>
         <div class="artist-links">
-          <a href="#" target="_blank">spotify</a>
-          <a href="#" target="_blank">apple</a>
-          <a href="#" target="_blank">soundcloud</a>
+          <span>soundcloud</span>
         </div>
       </div>
-    </div>
+    </a>
+
+    <a class="grid-item" href="https://soundcloud.com/user-906197253/maandem-maad-gangnem-ting-leak-uk-innit" target="_blank">
+      <svg class="placeholder-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="12" r="5"/><path d="M6,28 C6,22 10,18 16,18 C22,18 26,22 26,28"/></svg>
+      <div class="artist-overlay">
+        <span class="artist-name">Mandem Maad</span>
+        <div class="artist-links">
+          <span>soundcloud</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="grid-item" href="https://soundcloud.com/owendonovandonovanowen" target="_blank">
+      <svg class="placeholder-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="12" r="5"/><path d="M6,28 C6,22 10,18 16,18 C22,18 26,22 26,28"/></svg>
+      <div class="artist-overlay">
+        <span class="artist-name">iLoveEDM</span>
+        <div class="artist-links">
+          <span>soundcloud</span>
+        </div>
+      </div>
+    </a>
 
     <div class="grid-item">
       <svg class="placeholder-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="12" r="5"/><path d="M6,28 C6,22 10,18 16,18 C22,18 26,22 26,28"/></svg>
-      <div class="artist-overlay">
-        <span class="artist-name">artist two</span>
-        <div class="artist-links">
-          <a href="#" target="_blank">spotify</a>
-          <a href="#" target="_blank">apple</a>
-          <a href="#" target="_blank">soundcloud</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-item">
-      <svg class="placeholder-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="12" r="5"/><path d="M6,28 C6,22 10,18 16,18 C22,18 26,22 26,28"/></svg>
-      <div class="artist-overlay">
-        <span class="artist-name">artist three</span>
-        <div class="artist-links">
-          <a href="#" target="_blank">spotify</a>
-          <a href="#" target="_blank">apple</a>
-          <a href="#" target="_blank">soundcloud</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-item">
-      <svg class="placeholder-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="12" r="5"/><path d="M6,28 C6,22 10,18 16,18 C22,18 26,22 26,28"/></svg>
-      <div class="artist-overlay">
-        <span class="artist-name">artist four</span>
-        <div class="artist-links">
-          <a href="#" target="_blank">spotify</a>
-          <a href="#" target="_blank">apple</a>
-          <a href="#" target="_blank">soundcloud</a>
-        </div>
-      </div>
     </div>
 
   </div>
@@ -425,6 +434,10 @@
     <div class="track"><span class="track-num">05</span><div class="track-info"><span class="track-title">&mdash;</span><span class="track-artist">BBE</span></div><span class="track-dur">&mdash;:&mdash;&mdash;</span></div>
   </div>
 </section>
+
+<div class="footer-logo-wrap">
+  <canvas id="footerCanvas" width="1160" height="420"></canvas>
+</div>
 
 <section id="info">
   <div class="info-grid reveal">
@@ -755,6 +768,15 @@ var navLogo = new ShakyBBE(document.getElementById('navCanvas'), {
   bg: '#0c0a08'
 });
 navLogo.draw();
+
+// Footer: static large logo
+var footerLogo = new ShakyBBE(document.getElementById('footerCanvas'), {
+  fps: 7,
+  wobble: 2.0,
+  fill: '#d9d0c4',
+  bg: '#0c0a08'
+});
+footerLogo.draw();
 
 // Scroll reveal
 var reveals = document.querySelectorAll('.reveal');
