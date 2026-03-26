@@ -280,127 +280,6 @@
   .track:hover .track-num { color: var(--fg); }
   .sc-player { position: fixed; left: -9999px; width: 1px; height: 1px; }
 
-  /* ── SHOP ── */
-  .shop-tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 48px;
-    border-bottom: 1px solid var(--border);
-  }
-  .shop-tab {
-    background: none;
-    border: none;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--fg-dim);
-    padding: 12px 24px;
-    cursor: pointer;
-    transition: color 0.3s, border-color 0.3s;
-    border-bottom: 1px solid transparent;
-    margin-bottom: -1px;
-  }
-  .shop-tab:hover { color: var(--fg); }
-  .shop-tab.active {
-    color: var(--hover);
-    border-bottom-color: var(--hover);
-  }
-
-  .shop-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .shop-grid[hidden] { display: none; }
-
-  .product-card {
-    background: #110f0c;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    transition: border-color 0.3s;
-  }
-  .product-card:hover { border-color: #2a2520; }
-
-  .product-img {
-    aspect-ratio: 1;
-    background: #0e0c0a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .product-img-placeholder {
-    font-size: 28px;
-    color: var(--fg-dim);
-    opacity: 0.15;
-  }
-
-  .product-details {
-    padding: 16px;
-  }
-  .product-name {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--fg);
-    margin-bottom: 4px;
-  }
-  .product-artist {
-    font-size: 11px;
-    color: var(--fg-dim);
-    letter-spacing: 0.02em;
-    margin-bottom: 12px;
-  }
-  .product-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .product-price {
-    font-size: 13px;
-    color: var(--fg);
-    font-variant-numeric: tabular-nums;
-  }
-  .buy-btn {
-    background: none;
-    border: 1px solid var(--fg-dim);
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--fg-dim);
-    padding: 6px 16px;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .buy-btn:hover {
-    color: var(--hover);
-    border-color: var(--hover);
-  }
-
-  .beat-preview-btn {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    background: rgba(12,10,8,0.8);
-    border: 1px solid var(--fg-dim);
-    color: var(--fg-dim);
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 12px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .beat-preview-btn:hover {
-    color: var(--hover);
-    border-color: var(--hover);
-  }
-
   /* ── FOOTER LOGO ── */
   .footer-logo-wrap {
     position: relative;
@@ -490,8 +369,6 @@
     .info-grid { grid-template-columns: 1fr; gap: 40px; }
     .grid { grid-template-columns: 1fr; }
     .track { grid-template-columns: 28px 1fr auto; gap: 16px; }
-    .shop-grid { grid-template-columns: 1fr; }
-    .shop-tab { padding: 10px 16px; font-size: 10px; }
   }
 </style>
 </head>
@@ -504,7 +381,6 @@
   <ul class="nav-links">
     <li><a onclick="scrollToSection('artists')" class="active">Artists</a></li>
     <li><a onclick="scrollToSection('music')">Music</a></li>
-    <li><a onclick="scrollToSection('shop')">Shop</a></li>
     <li><a onclick="scrollToSection('info')">Info</a></li>
   </ul>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span></div>
@@ -513,7 +389,6 @@
 <div class="mobile-menu" id="mobileMenu">
   <a onclick="toggleMenu(); scrollToSection('artists')">Artists</a>
   <a onclick="toggleMenu(); scrollToSection('music')">Music</a>
-  <a onclick="toggleMenu(); scrollToSection('shop')">Shop</a>
   <a onclick="toggleMenu(); scrollToSection('info')">Info</a>
 </div>
 
@@ -579,147 +454,6 @@
     <div class="track" data-sc="https://soundcloud.com/blacwill/hey-yana-feat-michael"><span class="track-num"><span class="num-text">05</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">HEY YANA</span><span class="track-artist">Blac Will ft. Michael Christmas &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
   </div>
   <iframe id="scPlayer" class="sc-player" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/blacwill/yesterday-prod-by-iloveedm&color=%23d9d0c4&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>
-</section>
-
-<section id="shop">
-  <div class="section-label reveal">Shop</div>
-  <div class="shop-tabs reveal">
-    <button class="shop-tab active" onclick="switchShopTab('beats')">Beats</button>
-    <button class="shop-tab" onclick="switchShopTab('albums')">Albums</button>
-    <button class="shop-tab" onclick="switchShopTab('merch')">Merch</button>
-  </div>
-
-  <!-- BEATS -->
-  <div class="shop-grid reveal" id="shop-beats">
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9835;</span>
-        <button class="beat-preview-btn" onclick="previewBeat(this)" title="Preview">&#9654;</button>
-      </div>
-      <div class="product-details">
-        <div class="product-name">Beat Pack Vol. 1</div>
-        <div class="product-artist">prod. iLoveEDM</div>
-        <div class="product-bottom">
-          <span class="product-price">$29.99</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9835;</span>
-        <button class="beat-preview-btn" onclick="previewBeat(this)" title="Preview">&#9654;</button>
-      </div>
-      <div class="product-details">
-        <div class="product-name">Late Night Loops</div>
-        <div class="product-artist">prod. iLoveEDM</div>
-        <div class="product-bottom">
-          <span class="product-price">$24.99</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9835;</span>
-        <button class="beat-preview-btn" onclick="previewBeat(this)" title="Preview">&#9654;</button>
-      </div>
-      <div class="product-details">
-        <div class="product-name">Summer Haze Kit</div>
-        <div class="product-artist">prod. iLoveEDM</div>
-        <div class="product-bottom">
-          <span class="product-price">$34.99</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ALBUMS -->
-  <div class="shop-grid" id="shop-albums" hidden>
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9744;</span>
-      </div>
-      <div class="product-details">
-        <div class="product-name">Words That Don't Make Sense 2</div>
-        <div class="product-artist">Blac Will</div>
-        <div class="product-bottom">
-          <span class="product-price">$9.99</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9744;</span>
-      </div>
-      <div class="product-details">
-        <div class="product-name">Gangnem Ting</div>
-        <div class="product-artist">Mandem Maad</div>
-        <div class="product-bottom">
-          <span class="product-price">$9.99</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9744;</span>
-      </div>
-      <div class="product-details">
-        <div class="product-name">Smoke Session Tapes</div>
-        <div class="product-artist">DJ Blunts</div>
-        <div class="product-bottom">
-          <span class="product-price">$9.99</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MERCH -->
-  <div class="shop-grid" id="shop-merch" hidden>
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9733;</span>
-      </div>
-      <div class="product-details">
-        <div class="product-name">BBE Logo Tee</div>
-        <div class="product-artist">Black / White</div>
-        <div class="product-bottom">
-          <span class="product-price">$35.00</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9733;</span>
-      </div>
-      <div class="product-details">
-        <div class="product-name">BBE Hoodie</div>
-        <div class="product-artist">Black</div>
-        <div class="product-bottom">
-          <span class="product-price">$65.00</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <span class="product-img-placeholder">&#9733;</span>
-      </div>
-      <div class="product-details">
-        <div class="product-name">BBE Dad Hat</div>
-        <div class="product-artist">Black</div>
-        <div class="product-bottom">
-          <span class="product-price">$28.00</span>
-          <button class="buy-btn" onclick="alert('Coming soon!')">Buy</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <div class="footer-logo-wrap">
@@ -1091,22 +825,6 @@ window.addEventListener('scroll', function() {
     if (onclick && onclick.indexOf(current) !== -1) a.classList.add('active');
   });
 });
-
-// Shop tabs
-function switchShopTab(tab) {
-  var tabs = document.querySelectorAll('.shop-tab');
-  tabs.forEach(function(t) { t.classList.remove('active'); });
-  event.target.classList.add('active');
-
-  var grids = document.querySelectorAll('.shop-grid');
-  grids.forEach(function(g) { g.hidden = true; });
-  document.getElementById('shop-' + tab).hidden = false;
-}
-
-// Beat preview (placeholder - will use HTML5 audio with WAV files)
-function previewBeat(btn) {
-  alert('Beat preview coming soon! Upload WAV files to enable 15-second snippets.');
-}
 
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
