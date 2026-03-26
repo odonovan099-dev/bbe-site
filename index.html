@@ -305,7 +305,9 @@
     max-width: none;
     height: auto;
     aspect-ratio: 2.8 / 1;
-    opacity: 0.14;
+    opacity: 0.08;
+    transition: opacity 0.3s, transform 0.3s;
+    will-change: transform, opacity;
   }
   .footer-logo-wrap::after {
     content: '';
@@ -367,8 +369,37 @@
     0%, 100% { opacity: 0.3; }
     50% { opacity: 0.8; }
   }
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal { opacity: 0; transform: translateY(60px); transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Staggered children */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(50px) scale(0.96);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .stagger-children.visible > * { opacity: 1; transform: translateY(0) scale(1); }
+  .stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+  .stagger-children.visible > *:nth-child(2) { transition-delay: 0.12s; }
+  .stagger-children.visible > *:nth-child(3) { transition-delay: 0.24s; }
+  .stagger-children.visible > *:nth-child(4) { transition-delay: 0.36s; }
+  .stagger-children.visible > *:nth-child(5) { transition-delay: 0.48s; }
+
+  /* Tracks stagger faster */
+  .tracks.stagger-children > * { transition-duration: 0.5s; }
+  .tracks.stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+  .tracks.stagger-children.visible > *:nth-child(2) { transition-delay: 0.06s; }
+  .tracks.stagger-children.visible > *:nth-child(3) { transition-delay: 0.12s; }
+  .tracks.stagger-children.visible > *:nth-child(4) { transition-delay: 0.18s; }
+  .tracks.stagger-children.visible > *:nth-child(5) { transition-delay: 0.24s; }
+
+  /* Section label slide from left */
+  .section-label.reveal { transform: translateX(-40px) translateY(0); opacity: 0; }
+  .section-label.reveal.visible { transform: translateX(0) translateY(0); opacity: 1; }
+
+  /* Hero parallax */
+  #landing { transition: opacity 0.05s linear; }
+  .hero-mark { will-change: transform; }
 
   @media (max-width: 768px) {
     html, body { overflow-x: hidden; }
@@ -418,7 +449,7 @@
 
 <section id="artists">
   <div class="section-label reveal">Artists</div>
-  <div class="grid reveal">
+  <div class="grid reveal stagger-children">
 
     <a class="grid-item" href="https://soundcloud.com/blacwill" target="_blank">
       <img src="blacwill.jpg" alt="Blac Will">
@@ -462,7 +493,7 @@
 
 <section id="music">
   <div class="section-label reveal">Music</div>
-  <div class="tracks reveal">
+  <div class="tracks reveal stagger-children">
     <div class="track" data-sc="https://soundcloud.com/blacwill/yesterday-prod-by-iloveedm"><span class="track-num"><span class="num-text">01</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">YESTERDAY</span><span class="track-artist">Blac Will &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
     <div class="track" data-sc="https://soundcloud.com/blacwill/summerslam-06-feat-zito-prod"><span class="track-num"><span class="num-text">02</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">SummerSlam '06</span><span class="track-artist">Blac Will ft. Zito &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
     <div class="track" data-sc="https://soundcloud.com/blacwill/eat-up-feat-young-bobout-prod-by-owie-d"><span class="track-num"><span class="num-text">03</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">Eat Up</span><span class="track-artist">Blac Will ft. Young Bobout &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
@@ -914,6 +945,74 @@ window.addEventListener('scroll', function() {
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
+
+// ── Advanced scroll effects ──
+(function() {
+  var landing = document.getElementById('landing');
+  var heroMark = document.querySelector('.hero-mark');
+  var markSub = document.querySelector('.mark-sub');
+  var scrollHint = document.querySelector('.scroll-hint');
+  var footerWrap = document.querySelector('.footer-logo-wrap');
+  var footerCanvas = document.getElementById('footerCanvas');
+
+  // Continuous scroll-driven transforms for all sections
+  var allGridItems = document.querySelectorAll('.grid-item');
+  var allTracks = document.querySelectorAll('.track');
+
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        var scrollY = window.scrollY;
+        var winH = window.innerHeight;
+
+        // 1. Hero parallax + fade out (more aggressive)
+        if (scrollY < winH * 1.5) {
+          var fadeT = Math.min(1, scrollY / (winH * 0.45));
+          landing.style.opacity = 1 - fadeT;
+          heroMark.style.transform = 'translateY(' + (scrollY * 0.5) + 'px) scale(' + (1 - scrollY * 0.0003) + ')';
+          if (markSub) markSub.style.transform = 'translateY(' + (scrollY * 0.25) + 'px)';
+          if (scrollHint) scrollHint.style.opacity = Math.max(0, 1 - scrollY / (winH * 0.15));
+        }
+
+        // 2. Grid items parallax (subtle depth on scroll)
+        allGridItems.forEach(function(item, i) {
+          var rect = item.getBoundingClientRect();
+          if (rect.top < winH && rect.bottom > 0) {
+            var progress = (winH - rect.top) / (winH + rect.height);
+            var y = (0.5 - progress) * 20;
+            item.querySelector('img').style.transform = 'scale(1.05) translateY(' + y + 'px)';
+          }
+        });
+
+        // 3. Track items subtle slide (faster reveal)
+        allTracks.forEach(function(track, i) {
+          var rect = track.getBoundingClientRect();
+          if (rect.top < winH && rect.bottom > 0) {
+            var progress = Math.min(1, (winH - rect.top) / (winH * 0.25));
+            track.style.opacity = progress;
+            track.style.transform = 'translateX(' + ((1 - progress) * -10) + 'px)';
+          }
+        });
+
+        // 4. Footer logo parallax (scale up as you approach)
+        if (footerWrap) {
+          var fRect = footerWrap.getBoundingClientRect();
+          if (fRect.top < winH && fRect.bottom > 0) {
+            var fT = 1 - (fRect.top / winH);
+            fT = Math.min(1, Math.max(0, fT));
+            var scale = 0.88 + fT * 0.12;
+            footerCanvas.style.transform = 'scale(' + scale + ')';
+            footerCanvas.style.opacity = 0.04 + fT * 0.12;
+          }
+        }
+
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
 
 // SoundCloud Player
 (function() {
