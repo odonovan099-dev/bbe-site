@@ -371,13 +371,17 @@
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   @media (max-width: 768px) {
+    html, body { overflow-x: hidden; }
     nav { padding: 12px 20px; }
     section { padding: 100px 20px 60px; }
     .nav-links { display: none; }
     .hamburger { display: flex; }
+    .nav-copyright canvas { width: 140px; height: 12px; }
+    .nav-left { gap: 10px; }
     .info-grid { grid-template-columns: 1fr; gap: 40px; }
     .grid { grid-template-columns: 1fr; }
     .track { grid-template-columns: 28px 1fr auto; gap: 16px; }
+    .footer-logo-wrap { margin: 0 -20px -20vh; }
   }
 </style>
 </head>
