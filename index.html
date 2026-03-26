@@ -369,32 +369,29 @@
     0%, 100% { opacity: 0.3; }
     50% { opacity: 0.8; }
   }
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal { opacity: 0; transform: translateY(60px); transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   /* Staggered children */
   .stagger-children > * {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(50px) scale(0.96);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .stagger-children.visible > * { opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > * { opacity: 1; transform: translateY(0) scale(1); }
   .stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
-  .stagger-children.visible > *:nth-child(2) { transition-delay: 0.1s; }
-  .stagger-children.visible > *:nth-child(3) { transition-delay: 0.2s; }
-  .stagger-children.visible > *:nth-child(4) { transition-delay: 0.3s; }
-  .stagger-children.visible > *:nth-child(5) { transition-delay: 0.4s; }
+  .stagger-children.visible > *:nth-child(2) { transition-delay: 0.15s; }
+  .stagger-children.visible > *:nth-child(3) { transition-delay: 0.3s; }
+  .stagger-children.visible > *:nth-child(4) { transition-delay: 0.45s; }
+  .stagger-children.visible > *:nth-child(5) { transition-delay: 0.6s; }
 
   /* Section label slide from left */
-  .section-label.reveal { transform: translateX(-20px) translateY(0); }
-  .section-label.reveal.visible { transform: translateX(0) translateY(0); }
+  .section-label.reveal { transform: translateX(-40px) translateY(0); opacity: 0; }
+  .section-label.reveal.visible { transform: translateX(0) translateY(0); opacity: 1; }
 
   /* Hero parallax */
-  #landing { transition: opacity 0.1s linear; }
+  #landing { transition: opacity 0.05s linear; }
   .hero-mark { will-change: transform; }
-
-  /* Body transition for bg color */
-  body { transition: background-color 0.15s linear; }
 
   @media (max-width: 768px) {
     html, body { overflow-x: hidden; }
@@ -434,7 +431,7 @@
   <a onclick="toggleMenu(); scrollToSection('info')">Info</a>
 </div>
 
-<section id="landing" data-bg="12,10,8">
+<section id="landing">
   <div class="hero-mark">
     <canvas id="heroCanvas" width="1160" height="420"></canvas>
   </div>
@@ -442,7 +439,7 @@
   <div class="scroll-hint"><span></span></div>
 </section>
 
-<section id="artists" data-bg="13,11,15">
+<section id="artists">
   <div class="section-label reveal">Artists</div>
   <div class="grid reveal stagger-children">
 
@@ -486,7 +483,7 @@
   </div>
 </section>
 
-<section id="music" data-bg="10,13,12">
+<section id="music">
   <div class="section-label reveal">Music</div>
   <div class="tracks reveal stagger-children">
     <div class="track" data-sc="https://soundcloud.com/blacwill/yesterday-prod-by-iloveedm"><span class="track-num"><span class="num-text">01</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">YESTERDAY</span><span class="track-artist">Blac Will &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
@@ -502,7 +499,7 @@
   <canvas id="footerCanvas" width="1160" height="420"></canvas>
 </div>
 
-<section id="info" data-bg="14,12,8">
+<section id="info">
   <div class="info-grid reveal">
     <div class="info-block"><h3>Contact</h3><a href="mailto:info&#64;bbeonline.com">info&#64;bbeonline.com</a></div>
     <div class="info-block"><h3>Location</h3><p>New York, NY</p></div>
@@ -946,27 +943,13 @@ function toggleMenu() {
   var landing = document.getElementById('landing');
   var heroMark = document.querySelector('.hero-mark');
   var markSub = document.querySelector('.mark-sub');
+  var scrollHint = document.querySelector('.scroll-hint');
   var footerWrap = document.querySelector('.footer-logo-wrap');
   var footerCanvas = document.getElementById('footerCanvas');
 
-  // Sections with background colors (RGB arrays)
-  var colorSections = [];
-  document.querySelectorAll('section[data-bg]').forEach(function(s) {
-    var rgb = s.getAttribute('data-bg').split(',').map(Number);
-    colorSections.push({ el: s, color: rgb });
-  });
-
-  function lerp(a, b, t) {
-    return a + (b - a) * t;
-  }
-
-  function lerpColor(c1, c2, t) {
-    return [
-      Math.round(lerp(c1[0], c2[0], t)),
-      Math.round(lerp(c1[1], c2[1], t)),
-      Math.round(lerp(c1[2], c2[2], t))
-    ];
-  }
+  // Continuous scroll-driven transforms for all sections
+  var allGridItems = document.querySelectorAll('.grid-item');
+  var allTracks = document.querySelectorAll('.track');
 
   var ticking = false;
   window.addEventListener('scroll', function() {
@@ -975,45 +958,44 @@ function toggleMenu() {
         var scrollY = window.scrollY;
         var winH = window.innerHeight;
 
-        // 1. Background color interpolation
-        for (var i = 0; i < colorSections.length - 1; i++) {
-          var curr = colorSections[i];
-          var next = colorSections[i + 1];
-          var top = curr.el.offsetTop;
-          var nextTop = next.el.offsetTop;
-
-          if (scrollY >= top && scrollY < nextTop) {
-            var t = Math.min(1, Math.max(0, (scrollY - top) / (nextTop - top)));
-            // Ease the transition
-            t = t * t * (3 - 2 * t);
-            var c = lerpColor(curr.color, next.color, t);
-            document.body.style.backgroundColor = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')';
-            break;
-          }
-        }
-        // Last section
-        if (scrollY >= colorSections[colorSections.length - 1].el.offsetTop) {
-          var last = colorSections[colorSections.length - 1].color;
-          document.body.style.backgroundColor = 'rgb(' + last[0] + ',' + last[1] + ',' + last[2] + ')';
-        }
-
-        // 2. Hero parallax + fade out
-        if (scrollY < winH * 1.2) {
-          var fadeT = Math.min(1, scrollY / (winH * 0.6));
+        // 1. Hero parallax + fade out (more aggressive)
+        if (scrollY < winH * 1.5) {
+          var fadeT = Math.min(1, scrollY / (winH * 0.45));
           landing.style.opacity = 1 - fadeT;
-          heroMark.style.transform = 'translateY(' + (scrollY * 0.3) + 'px)';
-          if (markSub) markSub.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
+          heroMark.style.transform = 'translateY(' + (scrollY * 0.5) + 'px) scale(' + (1 - scrollY * 0.0003) + ')';
+          if (markSub) markSub.style.transform = 'translateY(' + (scrollY * 0.25) + 'px)';
+          if (scrollHint) scrollHint.style.opacity = Math.max(0, 1 - scrollY / (winH * 0.15));
         }
 
-        // 3. Footer logo parallax
+        // 2. Grid items parallax (subtle depth on scroll)
+        allGridItems.forEach(function(item, i) {
+          var rect = item.getBoundingClientRect();
+          if (rect.top < winH && rect.bottom > 0) {
+            var progress = (winH - rect.top) / (winH + rect.height);
+            var y = (0.5 - progress) * 20;
+            item.querySelector('img').style.transform = 'scale(1.05) translateY(' + y + 'px)';
+          }
+        });
+
+        // 3. Track items subtle slide
+        allTracks.forEach(function(track, i) {
+          var rect = track.getBoundingClientRect();
+          if (rect.top < winH && rect.bottom > 0) {
+            var progress = Math.min(1, (winH - rect.top) / (winH * 0.6));
+            track.style.opacity = progress;
+            track.style.transform = 'translateX(' + ((1 - progress) * -15) + 'px)';
+          }
+        });
+
+        // 4. Footer logo parallax (scale up as you approach)
         if (footerWrap) {
           var fRect = footerWrap.getBoundingClientRect();
           if (fRect.top < winH && fRect.bottom > 0) {
             var fT = 1 - (fRect.top / winH);
             fT = Math.min(1, Math.max(0, fT));
-            var scale = 0.95 + fT * 0.05;
+            var scale = 0.88 + fT * 0.12;
             footerCanvas.style.transform = 'scale(' + scale + ')';
-            footerCanvas.style.opacity = 0.08 + fT * 0.08;
+            footerCanvas.style.opacity = 0.04 + fT * 0.12;
           }
         }
 
