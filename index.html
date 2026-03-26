@@ -63,6 +63,11 @@
     border-bottom: 1px solid var(--border);
   }
 
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
   .nav-logo {
     cursor: pointer;
     transition: opacity 0.3s;
@@ -71,6 +76,10 @@
   }
   .nav-logo:hover { opacity: 0.6; }
   .nav-logo canvas { height: 34px; width: 108px; }
+  .nav-copyright canvas {
+    height: 16px;
+    width: 220px;
+  }
 
   .nav-links { display: flex; gap: 32px; list-style: none; }
   .nav-links a {
@@ -375,8 +384,11 @@
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="scrollToSection('landing')">
-    <canvas id="navCanvas" width="216" height="68"></canvas>
+  <div class="nav-left">
+    <div class="nav-logo" onclick="scrollToSection('landing')">
+      <canvas id="navCanvas" width="216" height="68"></canvas>
+    </div>
+    <div class="nav-copyright"><canvas id="copyrightCanvas" width="440" height="32"></canvas></div>
   </div>
   <ul class="nav-links">
     <li><a onclick="scrollToSection('artists')" class="active">Artists</a></li>
@@ -798,6 +810,75 @@ var footerLogo = new ShakyBBE(document.getElementById('footerCanvas'), {
   bg: '#0c0a08'
 });
 footerLogo.draw();
+
+// Copyright text - hand-drawn style matching BBE logo
+(function() {
+  var c = document.getElementById('copyrightCanvas');
+  var ctx = c.getContext('2d');
+  var W = c.width, H = c.height;
+  var text = '© 2026 All Rights Reserved';
+  var fillColor = '#d9d0c4'; // same as BBE logo squares
+  var bgColor = '#0c0a08';
+
+  ctx.clearRect(0, 0, W, H);
+
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+
+  var x = 4;
+  var baseY = H / 2;
+
+  function jitter(seed) {
+    var n = Math.sin(seed * 127.1) * 43758.5453;
+    return (n - Math.floor(n) - 0.5) * 2;
+  }
+
+  // Draw each character with rough, hand-drawn strokes
+  for (var i = 0; i < text.length; i++) {
+    var ch = text[i];
+    var seed = i * 73.7 + 42;
+    var jx = jitter(seed) * 2.5;
+    var jy = jitter(seed + 500) * 2.2;
+    var rot = jitter(seed + 250) * 0.07;
+    var sizeVar = 17 + jitter(seed + 800) * 1.5;
+
+    ctx.save();
+    ctx.translate(x + jx, baseY + jy);
+    ctx.rotate(rot);
+
+    ctx.font = '700 ' + sizeVar + 'px "Courier Prime", monospace';
+    ctx.fillStyle = fillColor;
+    ctx.strokeStyle = fillColor;
+
+    // Multiple offset passes for thick, rough ink look
+    ctx.fillText(ch, 0, 0);
+    ctx.globalAlpha = 0.35;
+    ctx.fillText(ch, 0.6, 0.3);
+    ctx.fillText(ch, -0.3, 0.4);
+    ctx.globalAlpha = 0.4;
+    ctx.lineWidth = 1.0 + Math.abs(jitter(seed + 333)) * 0.8;
+    ctx.strokeText(ch, 0, 0);
+    ctx.globalAlpha = 1;
+
+    ctx.restore();
+
+    ctx.font = '700 17px "Courier Prime", monospace';
+    x += ctx.measureText(ch).width + 1;
+  }
+
+  // Film grain on text pixels only
+  var imgData = ctx.getImageData(0, 0, W, H);
+  var d = imgData.data;
+  for (var p = 0; p < d.length; p += 4) {
+    if (d[p + 3] > 0) {
+      var noise = (Math.random() - 0.5) * 20;
+      d[p] = Math.min(255, Math.max(0, d[p] + noise));
+      d[p+1] = Math.min(255, Math.max(0, d[p+1] + noise));
+      d[p+2] = Math.min(255, Math.max(0, d[p+2] + noise));
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+})();
 
 // Scroll reveal
 var reveals = document.querySelectorAll('.reveal');
