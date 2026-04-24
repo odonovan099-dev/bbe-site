@@ -172,10 +172,107 @@
     font-weight: 500;
   }
 
+  /* ── RELEASES ── */
+  .releases-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 56px 40px;
+  }
+
+  .release-item {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+  }
+
+  .release-cover {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #110f0c;
+  }
+
+  .release-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s;
+    filter: contrast(1.02) saturate(0.96);
+  }
+
+  .release-item:hover .release-cover img {
+    transform: scale(1.035);
+    filter: contrast(1.05) saturate(1);
+  }
+
+  .release-status {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    padding: 7px 11px 6px;
+    background: rgba(12, 10, 8, 0.78);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    font-weight: 500;
+  }
+
+  .release-status.upcoming {
+    color: var(--bg);
+    background: var(--fg);
+    border-color: var(--fg);
+  }
+
+  .release-meta {
+    padding-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .release-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: color 0.25s;
+    color: var(--fg);
+  }
+
+  .release-artist {
+    font-size: 11px;
+    color: var(--fg-dim);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .release-links {
+    margin-top: 12px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+
+  .release-links span, .release-links a {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .release-item:hover .release-title { color: var(--hover); }
+  .release-item:hover .release-links span { color: var(--fg); }
+
   /* ── ARTISTS GRID ── */
   .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2px;
   }
 
@@ -223,21 +320,23 @@
   }
 
   .artist-name {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: lowercase;
     color: var(--fg);
+    text-align: center;
+    padding: 0 8px;
   }
 
   .artist-links {
     display: flex;
-    gap: 16px;
+    gap: 12px;
   }
 
-  .artist-links a {
-    font-size: 10px;
-    letter-spacing: 0.1em;
+  .artist-links span, .artist-links a {
+    font-size: 9px;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--fg-dim);
     text-decoration: none;
@@ -410,7 +509,11 @@
     .nav-copyright canvas { width: 140px; height: 12px; }
     .nav-left { gap: 10px; }
     .info-grid { grid-template-columns: 1fr; gap: 40px; }
-    .grid { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .releases-grid { grid-template-columns: 1fr; gap: 48px; }
+    .release-title { font-size: 15px; }
+    .artist-name { font-size: 12px; letter-spacing: 0.08em; }
+    .artist-links span, .artist-links a { font-size: 8px; letter-spacing: 0.12em; }
     .track { grid-template-columns: 28px 1fr auto; gap: 16px; }
     .footer-logo-wrap { margin: 0 -20px -20vh; }
   }
@@ -426,7 +529,8 @@
     <div class="nav-copyright"><canvas id="copyrightCanvas" width="440" height="32"></canvas></div>
   </div>
   <ul class="nav-links">
-    <li><a onclick="scrollToSection('artists')" class="active">Artists</a></li>
+    <li><a onclick="scrollToSection('releases')" class="active">Releases</a></li>
+    <li><a onclick="scrollToSection('artists')">Artists</a></li>
     <li><a onclick="scrollToSection('music')">Music</a></li>
     <li><a onclick="scrollToSection('info')">Info</a></li>
   </ul>
@@ -434,6 +538,7 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
+  <a onclick="toggleMenu(); scrollToSection('releases')">Releases</a>
   <a onclick="toggleMenu(); scrollToSection('artists')">Artists</a>
   <a onclick="toggleMenu(); scrollToSection('music')">Music</a>
   <a onclick="toggleMenu(); scrollToSection('info')">Info</a>
@@ -445,6 +550,37 @@
   </div>
   <div class="mark-sub">2026</div>
   <div class="scroll-hint"><span></span></div>
+</section>
+
+<section id="releases">
+  <div class="section-label reveal">Releases</div>
+  <div class="releases-grid reveal stagger-children">
+
+    <a class="release-item" href="https://open.spotify.com/album/3sJ2LtxyOKQ4A1Z6oNvhQP?si=iETxjzhgTNy6PiAEUfqmOA" target="_blank">
+      <div class="release-cover">
+        <img src="blacwill.jpg" alt="Words that Don't Make Sense 3">
+        <div class="release-status">Out Now</div>
+      </div>
+      <div class="release-meta">
+        <div class="release-title">Words that Don't Make Sense 3</div>
+        <div class="release-artist">Blac Will</div>
+        <div class="release-links"><span>Spotify</span></div>
+      </div>
+    </a>
+
+    <div class="release-item">
+      <div class="release-cover">
+        <img src="seleka.jpg" alt="Selekta">
+        <div class="release-status upcoming">Upcoming</div>
+      </div>
+      <div class="release-meta">
+        <div class="release-title">Selekta</div>
+        <div class="release-artist">iLoveEDM</div>
+        <div class="release-links"><span>Coming soon</span></div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <section id="artists">
