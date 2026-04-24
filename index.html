@@ -16,11 +16,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0c0a08;
-    --fg: #d9d0c4;
-    --fg-dim: #5e5549;
-    --border: #1e1a16;
-    --hover: #f0ebe4;
+    --bg: #0b0e14;
+    --fg: #e8ecf2;
+    --fg-dim: #5a6370;
+    --border: #1a1f2a;
+    --hover: #ffffff;
+    --accent: #c3e54d;
     --mono: 'Courier Prime', 'Courier New', Courier, monospace;
   }
 
@@ -57,7 +58,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 32px;
-    background: rgba(12,10,8,0.9);
+    background: rgba(11,14,20,0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
@@ -92,7 +93,8 @@
     transition: color 0.3s;
     cursor: pointer;
   }
-  .nav-links a:hover, .nav-links a.active { color: var(--hover); }
+  .nav-links a:hover { color: var(--hover); }
+  .nav-links a.active { color: var(--accent); }
 
   .hamburger {
     display: none;
@@ -214,7 +216,7 @@
     letter-spacing: 0.28em;
     text-transform: uppercase;
     padding: 7px 11px 6px;
-    background: rgba(12, 10, 8, 0.78);
+    background: rgba(11, 14, 20, 0.78);
     color: var(--fg);
     border: 1px solid var(--border);
     backdrop-filter: blur(6px);
@@ -224,8 +226,8 @@
 
   .release-status.upcoming {
     color: var(--bg);
-    background: var(--fg);
-    border-color: var(--fg);
+    background: var(--accent);
+    border-color: var(--accent);
   }
 
   .release-meta {
@@ -379,10 +381,10 @@
   .track:hover .track-num .num-text { display: none; }
   .track:hover .track-num .play-icon { display: inline; }
   .track.playing .track-num .num-text { display: none; }
-  .track.playing .track-num .play-icon { display: inline; color: var(--fg); }
+  .track.playing .track-num .play-icon { display: inline; color: var(--accent); }
   .track-info { display: flex; flex-direction: column; gap: 2px; }
   .track-title { font-size: 13px; font-weight: 500; letter-spacing: 0.04em; }
-  .track.playing .track-title { color: var(--hover); }
+  .track.playing .track-title { color: var(--accent); }
   .track-artist { font-size: 11px; color: var(--fg-dim); letter-spacing: 0.02em; }
   .track-dur { font-size: 11px; color: var(--fg-dim); font-variant-numeric: tabular-nums; }
   .track:hover .track-num { color: var(--fg); }
@@ -531,7 +533,7 @@
   <ul class="nav-links">
     <li><a onclick="scrollToSection('releases')" class="active">Releases</a></li>
     <li><a onclick="scrollToSection('artists')">Artists</a></li>
-    <li><a onclick="scrollToSection('music')">Music</a></li>
+    <li><a onclick="scrollToSection('listen')">Listen</a></li>
     <li><a onclick="scrollToSection('info')">Info</a></li>
   </ul>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span></div>
@@ -540,7 +542,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <a onclick="toggleMenu(); scrollToSection('releases')">Releases</a>
   <a onclick="toggleMenu(); scrollToSection('artists')">Artists</a>
-  <a onclick="toggleMenu(); scrollToSection('music')">Music</a>
+  <a onclick="toggleMenu(); scrollToSection('listen')">Listen</a>
   <a onclick="toggleMenu(); scrollToSection('info')">Info</a>
 </div>
 
@@ -627,8 +629,8 @@
   </div>
 </section>
 
-<section id="music">
-  <div class="section-label reveal">Music</div>
+<section id="listen">
+  <div class="section-label reveal">Listen</div>
   <div class="tracks reveal stagger-children">
     <div class="track" data-sc="https://soundcloud.com/blacwill/yesterday-prod-by-iloveedm"><span class="track-num"><span class="num-text">01</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">YESTERDAY</span><span class="track-artist">Blac Will &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
     <div class="track" data-sc="https://soundcloud.com/blacwill/summerslam-06-feat-zito-prod"><span class="track-num"><span class="num-text">02</span><span class="play-icon">&#9654;</span></span><div class="track-info"><span class="track-title">SummerSlam '06</span><span class="track-artist">Blac Will ft. Zito &middot; prod. iLoveEDM</span></div><span class="track-dur"></span></div>
@@ -662,8 +664,8 @@ class ShakyBBE {
     this.wobble = opts.wobble || 4;
     this.frame = 0;
     this.lastDraw = 0;
-    this.fillColor = opts.fill || '#d9d0c4';
-    this.bgColor = opts.bg || '#0c0a08';
+    this.fillColor = opts.fill || '#e8ecf2';
+    this.bgColor = opts.bg || '#0b0e14';
     this.squareProfiles = [
       { wRatio: 0.92, hRatio: 1.04 },
       { wRatio: 1.08, hRatio: 0.96 },
@@ -879,7 +881,7 @@ class ShakyBBE {
     ctx.fillRect(0, 0, W, H);
 
     var vg = ctx.createRadialGradient(W/2, H/2, W*0.15, W/2, H/2, W*0.7);
-    vg.addColorStop(0, 'rgba(12,10,8,0)');
+    vg.addColorStop(0, 'rgba(11,14,20,0)');
     vg.addColorStop(1, 'rgba(0,0,0,0.3)');
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, W, H);
@@ -959,8 +961,8 @@ class ShakyBBE {
 var hero = new ShakyBBE(document.getElementById('heroCanvas'), {
   fps: 7,
   wobble: 3.5,
-  fill: '#d9d0c4',
-  bg: '#0c0a08'
+  fill: '#e8ecf2',
+  bg: '#0b0e14'
 });
 hero.start();
 
@@ -968,8 +970,8 @@ hero.start();
 var navLogo = new ShakyBBE(document.getElementById('navCanvas'), {
   fps: 7,
   wobble: 1.4,
-  fill: '#d9d0c4',
-  bg: '#0c0a08'
+  fill: '#e8ecf2',
+  bg: '#0b0e14'
 });
 navLogo.draw();
 
@@ -977,8 +979,8 @@ navLogo.draw();
 var footerLogo = new ShakyBBE(document.getElementById('footerCanvas'), {
   fps: 7,
   wobble: 2.0,
-  fill: '#d9d0c4',
-  bg: '#0c0a08'
+  fill: '#e8ecf2',
+  bg: '#0b0e14'
 });
 footerLogo.draw();
 
@@ -988,8 +990,8 @@ footerLogo.draw();
   var ctx = c.getContext('2d');
   var W = c.width, H = c.height;
   var text = '© 2026 All Rights Reserved';
-  var fillColor = '#d9d0c4'; // same as BBE logo squares
-  var bgColor = '#0c0a08';
+  var fillColor = '#e8ecf2'; // same as BBE logo squares
+  var bgColor = '#0b0e14';
 
   ctx.clearRect(0, 0, W, H);
 
