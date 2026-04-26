@@ -16,12 +16,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0b0e14;
-    --fg: #e8ecf2;
-    --fg-dim: #5a6370;
-    --border: #1a1f2a;
+    --bg: #000000;
+    --fg: #f5f1e8;
+    --fg-dim: #6e6e6e;
+    --border: #1f1f1f;
     --hover: #ffffff;
-    --accent: #c3e54d;
+    --accent: #ff1744;
     --mono: 'Courier Prime', 'Courier New', Courier, monospace;
   }
 
@@ -58,7 +58,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 32px;
-    background: rgba(11,14,20,0.85);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
@@ -247,7 +247,7 @@
     position: relative;
     aspect-ratio: 1;
     overflow: hidden;
-    background: #110f0c;
+    background: #1a1a1a;
   }
 
   .release-cover img {
@@ -271,7 +271,7 @@
     letter-spacing: 0.28em;
     text-transform: uppercase;
     padding: 7px 11px 6px;
-    background: rgba(11, 14, 20, 0.78);
+    background: rgba(0, 0, 0, 0.78);
     color: var(--fg);
     border: 1px solid var(--border);
     backdrop-filter: blur(6px);
@@ -335,7 +335,7 @@
 
   .grid-item {
     aspect-ratio: 1;
-    background: #110f0c;
+    background: #1a1a1a;
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -430,7 +430,7 @@
     cursor: pointer;
     transition: background 0.2s;
   }
-  .track:hover { background: rgba(255,255,255,0.015); }
+  .track:hover { background: rgba(255,255,255,0.025); }
   .track-num { font-size: 13px; color: var(--fg-dim); text-align: right; font-variant-numeric: tabular-nums; }
   .track-num .play-icon { display: none; }
   .track:hover .track-num .num-text { display: none; }
@@ -937,8 +937,8 @@ class ShakyBBE {
     ctx.fillRect(0, 0, W, H);
 
     var vg = ctx.createRadialGradient(W/2, H/2, W*0.15, W/2, H/2, W*0.7);
-    vg.addColorStop(0, 'rgba(11,14,20,0)');
-    vg.addColorStop(1, 'rgba(0,0,0,0.3)');
+    vg.addColorStop(0, 'rgba(0,0,0,0)');
+    vg.addColorStop(1, 'rgba(0,0,0,0.35)');
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, W, H);
 
@@ -1050,8 +1050,8 @@ class ShakyBBE {
 var hero = new ShakyBBE(document.getElementById('heroCanvas'), {
   fps: 7,
   wobble: 3.5,
-  fill: '#e8ecf2',
-  bg: '#0b0e14'
+  fill: '#f5f1e8',
+  bg: '#000000'
 });
 hero.start();
 
@@ -1059,8 +1059,8 @@ hero.start();
 var navLogo = new ShakyBBE(document.getElementById('navCanvas'), {
   fps: 7,
   wobble: 1.4,
-  fill: '#e8ecf2',
-  bg: '#0b0e14'
+  fill: '#f5f1e8',
+  bg: '#000000'
 });
 navLogo.draw();
 
@@ -1068,8 +1068,8 @@ navLogo.draw();
 var footerLogo = new ShakyBBE(document.getElementById('footerCanvas'), {
   fps: 7,
   wobble: 2.0,
-  fill: '#e8ecf2',
-  bg: '#0b0e14'
+  fill: '#f5f1e8',
+  bg: '#000000'
 });
 footerLogo.draw();
 
@@ -1079,8 +1079,8 @@ footerLogo.draw();
   var ctx = c.getContext('2d');
   var W = c.width, H = c.height;
   var text = '© 2026 All Rights Reserved';
-  var fillColor = '#e8ecf2'; // same as BBE logo squares
-  var bgColor = '#0b0e14';
+  var fillColor = '#f5f1e8'; // same as BBE logo squares
+  var bgColor = '#000000';
 
   ctx.clearRect(0, 0, W, H);
 
