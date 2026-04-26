@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="BBE">
 <meta name="twitter:image" content="https://bbeonline.com/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0b0e14;
@@ -108,9 +108,10 @@
     background: var(--fg); transition: all 0.3s;
   }
 
-  section { min-height: 100vh; padding: 120px 32px 80px; }
+  section { padding: 120px 32px 80px; }
 
   #landing {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -126,7 +127,8 @@
     inset: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 2px;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
@@ -136,28 +138,33 @@
   .ticker-row {
     display: flex;
     white-space: nowrap;
-    font-family: 'Futura', 'Helvetica Neue', 'Arial Black', Impact, sans-serif;
+    font-family: 'Archivo Black', 'Futura', 'Helvetica Neue', Impact, sans-serif;
     font-weight: 900;
-    font-style: italic;
-    font-size: clamp(56px, 10vw, 150px);
-    letter-spacing: -0.02em;
+    font-style: normal;
+    font-size: clamp(16px, 2.4vw, 34px);
+    letter-spacing: -0.04em;
     color: var(--fg);
     text-transform: uppercase;
-    line-height: 1;
+    line-height: 0.9;
     flex-shrink: 0;
     animation: tickerSlide 60s linear infinite;
   }
 
   .ticker-row span {
-    padding-right: 0.4em;
+    padding-right: 0.08em;
     display: inline-block;
+    transform: skewX(-12deg);
   }
 
-  .ticker-row.r1 { opacity: 0.05; animation-duration: 55s; }
-  .ticker-row.r2 { opacity: 0.065; animation-duration: 80s; animation-direction: reverse; }
-  .ticker-row.r3 { opacity: 0.045; animation-duration: 42s; }
-  .ticker-row.r4 { opacity: 0.07; animation-duration: 95s; animation-direction: reverse; }
-  .ticker-row.r5 { opacity: 0.05; animation-duration: 68s; }
+  .ticker-row:nth-child(odd)  { animation-direction: normal; }
+  .ticker-row:nth-child(even) { animation-direction: reverse; }
+  .ticker-row:nth-child(7n+1) { animation-duration: 38s; opacity: 0.075; }
+  .ticker-row:nth-child(7n+2) { animation-duration: 22s; opacity: 0.09;  }
+  .ticker-row:nth-child(7n+3) { animation-duration: 64s; opacity: 0.06;  }
+  .ticker-row:nth-child(7n+4) { animation-duration: 18s; opacity: 0.085; }
+  .ticker-row:nth-child(7n+5) { animation-duration: 50s; opacity: 0.07;  }
+  .ticker-row:nth-child(7n+6) { animation-duration: 30s; opacity: 0.095; }
+  .ticker-row:nth-child(7n+7) { animation-duration: 44s; opacity: 0.065; }
 
   @keyframes tickerSlide {
     from { transform: translate3d(0, 0, 0); }
@@ -595,13 +602,7 @@
 </div>
 
 <section id="landing">
-  <div class="ticker-bg" id="tickerBg">
-    <div class="ticker-row r1"><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span></div>
-    <div class="ticker-row r2"><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span></div>
-    <div class="ticker-row r3"><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span></div>
-    <div class="ticker-row r4"><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span></div>
-    <div class="ticker-row r5"><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span><span>BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;BBE 2026 NYC&nbsp;•&nbsp;</span></div>
-  </div>
+  <div class="ticker-bg" id="tickerBg"></div>
   <div class="hero-mark">
     <canvas id="heroCanvas" width="1160" height="420"></canvas>
   </div>
@@ -1011,6 +1012,39 @@ class ShakyBBE {
     requestAnimationFrame(loop);
   }
 }
+
+// Ticker: fill landing height with enough rows
+(function() {
+  var bg = document.getElementById('tickerBg');
+  if (!bg) return;
+  var phrase = 'BBE 2026&nbsp;•&nbsp;';
+  var chunk = phrase.repeat(8);
+  var inner = '<span>' + chunk + '</span><span>' + chunk + '</span>';
+
+  function build() {
+    bg.innerHTML = '';
+    var probe = document.createElement('div');
+    probe.className = 'ticker-row';
+    probe.innerHTML = inner;
+    bg.appendChild(probe);
+    var rowH = probe.getBoundingClientRect().height || 30;
+    var target = window.innerHeight;
+    var count = Math.max(8, Math.ceil(target / (rowH + 2)) + 2);
+    bg.innerHTML = '';
+    for (var i = 0; i < count; i++) {
+      var row = document.createElement('div');
+      row.className = 'ticker-row';
+      row.innerHTML = inner;
+      bg.appendChild(row);
+    }
+  }
+  build();
+  var rt;
+  window.addEventListener('resize', function() {
+    clearTimeout(rt);
+    rt = setTimeout(build, 150);
+  });
+})();
 
 // Hero: animated
 var hero = new ShakyBBE(document.getElementById('heroCanvas'), {
